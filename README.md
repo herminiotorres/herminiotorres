@@ -6,7 +6,7 @@
 - [twitter](https://twitter.com/herminiotorres)
 - [linkedin](https://linkedin.com/in/herminiotorres)
 - [angel.co](https://angel.co/u/herminiotorres)
-- [twitch](https://twitch.com/herminiotorres)
+- [twitch](https://twitch.tv/PipeReducer)
 - [instagram](https://instagram.com/herminiotorres)
 
 ### About
