@@ -1,5 +1,7 @@
+<!--
 ### Hi there 👋
 - 🔭 I'm Herminio Torres and I'm a Software Engineer obsessed with designing and building exceptional, high-quality, performant websites and applications.
+-->
 
 ### Social
 ![](https://komarev.com/ghpvc/?username=herminiotorres&color=blueviolet)
@@ -8,6 +10,7 @@
 [![Twitter Badge](https://img.shields.io/badge/-herminiotorres-blue?style=flat&logo=twitter&logoColor=white&link=https://twitter.com/herminiotorres)](https://twitter.com/herminiotorres)
 [![Instagram Badge](https://img.shields.io/badge/-herminiotorres-blue?style=flat&logo=instagram&logoColor=white&link=https://instagram.com/herminiotorres)](https://instagram.com/herminiotorres)
 
+<!--
 ### About
 - 🌱 I’m currently learning:
   - I learning Frontend Stuffs like: HTML, CSS, JS.
@@ -16,6 +19,7 @@
 - ⚡ Fun fact:
   - I ride 340km with a bike without gears
   - I did my first step to made myself as a robot, and my arm has a titanium piece with 8 screws.
+-->
   
 ### Stats
 <div>
