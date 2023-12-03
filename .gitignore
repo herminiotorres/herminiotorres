@@ -33,4 +33,5 @@ erl_crash.dump
 npm-debug.log
 yarn-error.log
 /node_modules/
-───────────────
+
+.env
