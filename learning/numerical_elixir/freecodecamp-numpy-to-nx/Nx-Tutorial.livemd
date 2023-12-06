@@ -1,0 +1,699 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# FreecodeCamp - NumPy Tutorial
+
+```elixir
+Mix.install([
+  {:nx, "~> 0.6.4"},
+  {:kino, "~> 0.11.3"}
+])
+
+import IEx.Helpers
+```
+
+## References
+
+* [FreecodeCamp Youtube - Python NumPy Tutorial for Beginners](https://www.youtube.com/watch?v=QUT1VHiLmmI)
+* [NumPy Tutorial Github](https://github.com/KeithGalli/NumPy)
+* [NX Docs](https://hexdocs.pm/nx/)
+* [Numerical Elixir (Nx) Github](https://github.com/elixir-nx)
+
+## The Basics
+
+```elixir
+c = Nx.tensor([1, 2, 3], type: :f32)
+IO.inspect(c)
+a = Nx.tensor([1, 2, 3], type: {:f, 32})
+IO.inspect(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+```
+
+```elixir
+b = Nx.tensor([[9.0, 8.0, 7.0], [6.0, 5.0, 4.0]])
+Nx.Defn.Kernel.print_value(b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[2][3]
+  
+  Nx.Defn.Expr
+  tensor a                f32[2][3]
+  b = token hook_73: a    tuple1
+  c = attach_token b, a   f32[2][3]
+>
+```
+
+```elixir
+# Get Type
+Nx.type(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:f, 32}
+```
+
+```elixir
+# Get total size
+Nx.byte_size(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+12
+```
+
+```elixir
+# Get number of elements
+Nx.flat_size(a)
+Nx.size(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+3
+```
+
+```elixir
+# Get Shape
+Nx.shape(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{3}
+```
+
+## Accessing/Changing specific elements, rows, columns, etc
+
+```elixir
+a = Nx.tensor([[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14]], names: [:rows, :cols])
+IO.inspect(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[rows: 2][cols: 7]
+  [
+    [1, 2, 3, 4, 5, 6, 7],
+    [8, 9, 10, 11, 12, 13, 14]
+  ]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[rows: 2][cols: 7]
+  [
+    [1, 2, 3, 4, 5, 6, 7],
+    [8, 9, 10, 11, 12, 13, 14]
+  ]
+>
+```
+
+```elixir
+# Get a specific element [r, c]
+a[1][5]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64
+  13
+>
+```
+
+```elixir
+# Get a specific row 
+a[rows: 0]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[cols: 7]
+  [1, 2, 3, 4, 5, 6, 7]
+>
+```
+
+```elixir
+# Get a specific column
+a[cols: 2]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[rows: 2]
+  [3, 10]
+>
+```
+
+```elixir
+# Getting a little more fancy [row][startindex..endindex//stepsize]
+a[0][1..-1//2]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[cols: 3]
+  [2, 4, 6]
+>
+```
+
+```elixir
+# a[1,5] = 20
+
+# a[:,2] = [1,2]
+# print(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+b = Nx.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+IO.inspect(b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][2]
+  [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][2]
+  [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+>
+```
+
+```elixir
+# Get specific element (work outside in)
+b[0][1][1]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64
+  4
+>
+```
+
+```elixir
+# # replace 
+# b[:,1,:] = [[9,9,9],[8,8]]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+## Initializing Different Types of Arrays
+
+```elixir
+# All 0s matrix
+Nx.tensor(0, type: :f32) |> Nx.broadcast({2, 3})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[2][3]
+  [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0]
+  ]
+>
+```
+
+```elixir
+# All 1s matrix
+Nx.tensor(1, type: :u32) |> Nx.broadcast({4, 2, 2})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  u32[4][2][2]
+  [
+    [
+      [1, 1],
+      [1, 1]
+    ],
+    [
+      [1, 1],
+      [1, 1]
+    ],
+    [
+      [1, 1],
+      [1, 1]
+    ],
+    [
+      [1, 1],
+      [1, 1]
+    ]
+  ]
+>
+```
+
+```elixir
+# Any other number
+Nx.tensor(99, type: :f32) |> Nx.broadcast({2, 2})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[2][2]
+  [
+    [99.0, 99.0],
+    [99.0, 99.0]
+  ]
+>
+```
+
+```elixir
+# Any other number (full_like)
+Nx.tensor(4) |> Nx.broadcast(Nx.shape(a))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][7]
+  [
+    [4, 4, 4, 4, 4, 4, 4],
+    [4, 4, 4, 4, 4, 4, 4]
+  ]
+>
+```
+
+```elixir
+# Random decimal numbers
+{tensor, _} = Nx.Random.normal(Nx.Random.key(1), shape: {4, 2})
+tensor
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[4][2]
+  [
+    [0.6521257162094116, 0.0738222748041153],
+    [0.8340936899185181, 1.048075556755066],
+    [0.16854794323444366, -0.8705325126647949],
+    [1.4821152687072754, -0.7759459018707275]
+  ]
+>
+```
+
+```elixir
+# The identity matrix
+Nx.make_diagonal(Nx.tensor([1, 1, 1, 1, 1]))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[5][5]
+  [
+    [1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 1]
+  ]
+>
+```
+
+## Mathematics
+
+```elixir
+defmodule TensorMath do
+  import Nx.Defn
+
+  defn add(a, b) do
+    a + b
+  end
+
+  defn subtraction(a, b) do
+    a - b
+  end
+
+  defn multiply(a, b) do
+    a * b
+  end
+
+  defn divide(a, b) do
+    a / b
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, TensorMath, <<70, 79, 82, 49, 0, 0, 15, ...>>, true}
+```
+
+```elixir
+a = Nx.tensor([1, 2, 3, 4])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4]
+  [1, 2, 3, 4]
+>
+```
+
+```elixir
+TensorMath.add(a, 2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4]
+  [3, 4, 5, 6]
+>
+```
+
+```elixir
+TensorMath.subtraction(a, 2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4]
+  [-1, 0, 1, 2]
+>
+```
+
+```elixir
+TensorMath.multiply(a, 2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4]
+  [2, 4, 6, 8]
+>
+```
+
+```elixir
+TensorMath.divide(a, 2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[4]
+  [0.5, 1.0, 1.5, 2.0]
+>
+```
+
+```elixir
+b = Nx.tensor([1, 0, 1, 0])
+TensorMath.add(a, b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4]
+  [2, 2, 4, 4]
+>
+```
+
+```elixir
+# Take the sin
+Nx.cos(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[4]
+  [0.5403022766113281, -0.416146844625473, -0.9899924993515015, -0.6536436080932617]
+>
+```
+
+## Linear Algebra
+
+```elixir
+a = Nx.tensor(1) |> Nx.broadcast({2, 3})
+
+b = Nx.tensor(2) |> Nx.broadcast({3, 2})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3][2]
+  [
+    [2, 2],
+    [2, 2],
+    [2, 2]
+  ]
+>
+```
+
+## Statistics
+
+```elixir
+stats = Nx.tensor([[1, 2, 3], [4, 5, 6]], names: [:rows, :cols])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[rows: 2][cols: 3]
+  [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+>
+```
+
+```elixir
+Nx.reduce_min(stats)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64
+  1
+>
+```
+
+```elixir
+Nx.reduce_max(stats, axes: [:cols])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[rows: 2]
+  [3, 6]
+>
+```
+
+```elixir
+Nx.sum(stats, axes: [0])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[cols: 3]
+  [5, 7, 9]
+>
+```
+
+## Reorganizing Arrays
+
+```elixir
+# before = Nx.tensor([[1,2,3,4],[5,6,7,8]])
+# IO.inspect(before)
+
+# after = Nx.reshape(before, {2,3})
+# IO.inspect(after)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+```elixir
+# Vertically stacking vectors
+v1 = Nx.tensor([1, 2, 3, 4])
+v2 = Nx.tensor([5, 6, 7, 8])
+
+Nx.stack([v1, v2, v1, v2])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[4][4]
+  [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [1, 2, 3, 4],
+    [5, 6, 7, 8]
+  ]
+>
+```
+
+```elixir
+# Horizontal  stack
+# h1 = Nx.tensor(1) |> Nx.broadcast({2,4})
+# h2 = Nx.tensor(0) |> Nx.broadcast({2,2})
+
+# Nx.stack([h1,h2])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+## Miscellaneous
+
+```elixir
+file_input = Kino.Input.file("Your File Here!")
+```
+
+```elixir
+value = Kino.Input.read(file_input)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{file_ref: {:file, "7j2vbcquwms2j4ktu5ar7zlgx2y2h7ek"}, client_name: "data.txt"}
+```
+
+```elixir
+path = Kino.Input.file_path(value.file_ref)
+
+path
+|> File.stream!()
+|> Enum.map(fn line ->
+  line
+  |> String.replace("\n", "")
+  |> String.split(",", trim: true)
+  |> Enum.map(&String.to_integer/1)
+end)
+|> Nx.tensor(type: :u32)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  u32[3][18]
+  [
+    [1, 13, 21, 11, 196, 75, 4, 3, 34, 6, 7, 8, 0, 1, 2, 3, 4, 5],
+    [3, 42, 12, 33, 766, 75, 4, 55, 6, 4, 3, 4, 5, 6, 7, 0, 11, 12],
+    [1, 22, 33, 11, 999, 11, 2, 1, 78, 0, 1, 2, 9, 8, ...]
+  ]
+>
+```
