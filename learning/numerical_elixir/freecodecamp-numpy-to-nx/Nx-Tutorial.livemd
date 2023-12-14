@@ -1,11 +1,10 @@
-<!-- livebook:{"persist_outputs":true} -->
+<!-- livebook:{"file_entries":[{"name":"matrix.jpeg","type":"attachment"}],"persist_outputs":true} -->
 
 # FreecodeCamp - NumPy Tutorial
 
 ```elixir
 Mix.install([
-  {:nx, "~> 0.6.4"},
-  {:explorer, "~> 0.7.2"}
+  {:nx, "~> 0.6.4"}
 ])
 
 import IEx.Helpers
@@ -25,7 +24,7 @@ Numerical Elixir. The Nx library is a collection of functions and data types to 
 
 <!-- livebook:{"break_markdown":true} -->
 
-Create one-dimensional tensor
+#### Create one-dimensional tensor
 
 ```elixir
 a = Nx.tensor([1, 2, 3])
@@ -40,7 +39,7 @@ a = Nx.tensor([1, 2, 3])
 >
 ```
 
-Using different type
+#### Using different type
 
 ```elixir
 b = Nx.tensor([1, 2, 3], type: {:f, 32})
@@ -74,7 +73,7 @@ IO.inspect({b, c})
  >}
 ```
 
-Create an n-dimensional tensor, name, and axis
+#### Create an n-dimensional tensor, name, and axis
 
 ```elixir
 d = Nx.tensor([[9.0, 8.0, 7.0], [6.0, 5.0, 4.0]], names: [:y, :x])
@@ -94,7 +93,7 @@ Nx.Defn.Kernel.print_value(d)
 >
 ```
 
-Returns the type of the tensor.
+#### Returns the type of the tensor.
 
 ```elixir
 # type of a variable
@@ -116,7 +115,7 @@ Nx.type(b) |> IO.inspect()
 {:f, 32}
 ```
 
-Returns the byte size of the data in the tensor computed from its shape and type.
+#### Returns the byte size of the data in the tensor computed from its shape and type.
 
 ```elixir
 Nx.byte_size(a)
@@ -128,7 +127,7 @@ Nx.byte_size(a)
 24
 ```
 
-Returns the number of elements in the tensor.
+#### Returns the number of elements in the tensor.
 
 ```elixir
 Nx.size(a)
@@ -140,7 +139,7 @@ Nx.size(a)
 3
 ```
 
-Returns the shape of the tensor as a tuple.
+#### Returns the shape of the tensor as a tuple.
 
 ```elixir
 Nx.shape(a)
@@ -152,7 +151,7 @@ Nx.shape(a)
 {3}
 ```
 
-Returns all of the names in a tensor.
+#### Returns all of the names in a tensor.
 
 ```elixir
 Nx.names(d)
@@ -164,7 +163,7 @@ Nx.names(d)
 [:y, :x]
 ```
 
-Returns all of the axes in a tensor.
+#### Returns all of the axes in a tensor.
 
 ```elixir
 Nx.axes(d)
@@ -194,7 +193,7 @@ a = Nx.tensor([[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14]], names: [:rows
 >
 ```
 
-Get any cell of the tensor. Access a specific element `[row][column]`.
+#### Get any cell of the tensor. Access a specific element `[row][column]`.
 
 ```elixir
 a[1][5]
@@ -209,7 +208,7 @@ a[1][5]
 >
 ```
 
-Get a specific row.
+#### Get a specific row.
 
 ```elixir
 a[rows: 0] |> IO.inspect()
@@ -234,7 +233,7 @@ a[[0]]
 >
 ```
 
-Get a specific column.
+#### Get a specific column.
 
 ```elixir
 a[cols: 2] |> IO.inspect()
@@ -259,7 +258,7 @@ a[[.., 2]]
 >
 ```
 
-Getting a little more fancy `[rows: 0][start_index..end_index//step_size]`.
+#### Getting a little more fancy `[rows: 0][start_index..end_index//step_size]`.
 
 ```elixir
 a[rows: 0][1..-1//2] |> IO.inspect()
@@ -284,7 +283,7 @@ a[[0, 1..-1//2]]
 >
 ```
 
-Puts individual values from `updates` into the given tensor at the corresponding `indices`.
+#### Puts individual values from `updates` into the given tensor at the corresponding `indices`.
 
 ```elixir
 indices = Nx.tensor([1, 5])
@@ -319,7 +318,7 @@ Nx.put_slice(a, [1, 5], Nx.tensor([[20]]))
 >
 ```
 
-Puts the given `slice` into the given `tensor` at the given `start_indices`.
+#### Puts the given `slice` into the given `tensor` at the given `start_indices`.
 
 ```elixir
 Nx.put_slice(a, [1, 2], Nx.tensor([[1], [2]]))
@@ -337,7 +336,7 @@ Nx.put_slice(a, [1, 2], Nx.tensor([[1], [2]]))
 >
 ```
 
-Create 3-dimensional tensor
+#### Create 3-dimensional tensor
 
 ```elixir
 b = Nx.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
@@ -361,7 +360,7 @@ b = Nx.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
 >
 ```
 
-Get specific element (work outside in)
+#### Get specific element (work outside in)
 
 ```elixir
 b[0][1][1]
@@ -392,7 +391,7 @@ b[[.., 1]]
 >
 ```
 
-Replace
+#### Replace
 
 ```elixir
 Nx.put_slice(b, [0, 1, 1], Nx.tensor([[[9, 9]], [[8, 8]]]))
@@ -418,7 +417,7 @@ Nx.put_slice(b, [0, 1, 1], Nx.tensor([[[9, 9]], [[8, 8]]]))
 
 ## Initializing Different Types of Arrays
 
-All 0s matrix
+#### All 0s matrix
 
 ```elixir
 Nx.tensor(0, type: :f32) |> Nx.broadcast({2, 3})
@@ -436,7 +435,7 @@ Nx.tensor(0, type: :f32) |> Nx.broadcast({2, 3})
 >
 ```
 
-All 1s matrix
+#### All 1s matrix
 
 ```elixir
 Nx.tensor(1, type: :u32) |> Nx.broadcast({4, 2, 2})
@@ -468,7 +467,7 @@ Nx.tensor(1, type: :u32) |> Nx.broadcast({4, 2, 2})
 >
 ```
 
-Any other number
+#### Any other number
 
 ```elixir
 Nx.tensor(99, type: :f32) |> Nx.broadcast({2, 2})
@@ -486,7 +485,7 @@ Nx.tensor(99, type: :f32) |> Nx.broadcast({2, 2})
 >
 ```
 
-Any other number `full_like`
+#### Any other number `full_like`
 
 ```elixir
 shape = Nx.shape(a) |> IO.inspect()
@@ -511,7 +510,7 @@ Nx.tensor(4) |> Nx.broadcast(shape)
 >
 ```
 
-Random decimal numbers between 0 and 1.
+#### Random decimal numbers between 0 and 1.
 
 ```elixir
 {tensor, _} = Nx.Random.uniform(Nx.Random.key(42), 0, 1, shape: {4, 2}, type: {:f, 32})
@@ -532,7 +531,7 @@ tensor
 >
 ```
 
-Random integer numbers.
+#### Random integer numbers.
 
 ```elixir
 {tensor, _} = Nx.Random.randint(Nx.Random.key(4224), -4, 8, shape: {3, 3})
@@ -552,7 +551,7 @@ tensor
 >
 ```
 
-Creates a diagonal tensor from a 1D tensor.
+#### Creates a diagonal tensor from a 1D tensor.
 
 ```elixir
 Nx.make_diagonal(Nx.tensor([1, 1, 1, 1, 1]))
@@ -574,10 +573,25 @@ Nx.make_diagonal(Nx.tensor([1, 1, 1, 1, 1]))
 ```
 
 ```elixir
-Nx.eye()
+Nx.eye(5)
 ```
 
-Creates a tensor with the given shape which increments along the provided axis.
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[5][5]
+  [
+    [1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 1]
+  ]
+>
+```
+
+#### Creates a tensor with the given shape which increments along the provided axis.
 
 ```elixir
 t = Nx.tensor([1, 2, 3])
@@ -614,14 +628,16 @@ Nx.iota({3, 3}, axis: 1) |> Nx.add(1)
 >
 ```
 
-How to build this tensor.
+#### How to build this tensor.
 
 ```
-[1][1][1][1][1]
-[1][0][0][0][1]
-[1][0][9][0][1]
-[1][0][0][0][1]
-[1][1][1][1][1]
+[
+  [1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 1],
+  [1, 0, 9, 0, 1],
+  [1, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1]
+]
 ```
 
 ```elixir
@@ -727,7 +743,6 @@ a = Nx.tensor([1, 2, 3, 4])
 ```
 
 ```elixir
-# it should be array([5, 6, 7, 8])
 Nx.add(a, 2)
 ```
 
@@ -780,7 +795,6 @@ Nx.divide(a, 2)
 ```
 
 ```elixir
-# it should be array([1, 0, 3, 0])
 b = Nx.tensor([1, 0, 1, 0])
 Nx.add(a, b)
 ```
@@ -794,7 +808,7 @@ Nx.add(a, b)
 >
 ```
 
-Element-wise power of two tensors.
+#### Element-wise power of two tensors.
 
 ```elixir
 Nx.pow(a, 2)
@@ -809,7 +823,7 @@ Nx.pow(a, 2)
 >
 ```
 
-Calculates the cosine of each element in the tensor.
+#### Calculates the cosine of each element in the tensor.
 
 ```elixir
 Nx.cos(a)
@@ -859,7 +873,7 @@ b = Nx.tensor(2) |> Nx.broadcast({3, 2})
 >
 ```
 
-Returns the dot product of two tensors.
+#### Returns the dot product of two tensors.
 
 ```elixir
 Nx.dot(a, b)
@@ -877,7 +891,7 @@ Nx.dot(a, b)
 >
 ```
 
-Calculates the determinant of batched square matrices.
+#### Calculates the determinant of batched square matrices.
 
 ```elixir
 Nx.tensor(1)
@@ -1003,7 +1017,7 @@ before = Nx.tensor([[1, 2, 3, 4], [5, 6, 7, 8]])
 >
 ```
 
-Changes the shape of a tensor.
+#### Changes the shape of a tensor.
 
 The new shape is either a tuple or a tensor which we will retrieve the current shape from. The shapes must be compatible: the product of each dimension in the shape must be equal.
 
@@ -1069,7 +1083,7 @@ Nx.reshape(before, Nx.shape({2, 2, 2}))
 >
 ```
 
-Stacks a list of tensors with the same shape along a new axis.
+#### Stacks a list of tensors with the same shape along a new axis.
 
 ```elixir
 v1 = Nx.tensor([1, 2, 3, 4])
@@ -1132,14 +1146,14 @@ Nx.stack([v1, v2, v1, v2])
 ```
 
 ```elixir
-h1 = Nx.tensor(1) |> Nx.broadcast({2, 4})
+h1 = Nx.tensor(1) |> Nx.broadcast({2, 4}, names: [:x, :y])
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
 #Nx.Tensor<
-  s64[2][4]
+  s64[x: 2][y: 4]
   [
     [1, 1, 1, 1],
     [1, 1, 1, 1]
@@ -1148,14 +1162,14 @@ h1 = Nx.tensor(1) |> Nx.broadcast({2, 4})
 ```
 
 ```elixir
-h2 = Nx.tensor(0) |> Nx.broadcast({2, 2})
+h2 = Nx.tensor(0) |> Nx.broadcast({2, 2}, names: [:x, :y])
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
 #Nx.Tensor<
-  s64[2][2]
+  s64[x: 2][y: 2]
   [
     [0, 0],
     [0, 0]
@@ -1164,26 +1178,31 @@ h2 = Nx.tensor(0) |> Nx.broadcast({2, 2})
 ```
 
 ```elixir
-# horizontal stack
-# Nx.stack([h1,h2], axis: 2)
+Nx.concatenate([h1, h2], axis: :y)
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-nil
+#Nx.Tensor<
+  s64[x: 2][y: 6]
+  [
+    [1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 0, 0]
+  ]
+>
 ```
 
 ## Miscellaneous
 
 ```elixir
-path = "./data.txt"
+path = Path.join(__DIR__, "/files/data.txt")
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-"./data.txt"
+"/Users/herminiotorres/Workspace/herminiotorres/learning/numerical_elixir/freecodecamp-numpy-to-nx/files/data.txt"
 ```
 
 <!-- livebook:{"continue_on_error":true} -->
@@ -1198,8 +1217,23 @@ filedata =
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
   end)
-  |> Nx.tensor(type: :f32)
+  |> Nx.tensor(type: :u32)
 ```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  u32[3][18]
+  [
+    [1, 13, 21, 11, 196, 75, 4, 3, 34, 6, 7, 8, 0, 1, 2, 3, 4, 5],
+    [3, 42, 12, 33, 766, 75, 4, 55, 6, 4, 3, 4, 5, 6, 7, 0, 11, 12],
+    [1, 22, 33, 11, 999, 11, 2, 1, 78, 0, 1, 2, 9, 8, ...]
+  ]
+>
+```
+
+#### Filter
 
 ```elixir
 # filedata[filedata > 50]
@@ -1211,7 +1245,7 @@ filedata =
 nil
 ```
 
-Boolean Masking and Advanced Indexing
+#### Boolean Masking and Advanced Indexing
 
 ```elixir
 # (~((filedata > 50) & (filedata < 100)))
@@ -1222,6 +1256,17 @@ Boolean Masking and Advanced Indexing
 ```
 nil
 ```
+
+![](files/matrix.jpeg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Gave the image above to finish the challenge:
+
+1. create the tensor
+2. get the tensor `[[11,12], [16,17]]` shaped `{2,2}`
+3. get the tensor `[2, 8, 14, 20]` shaped `{1,4}`
+4. get the tensor `[[4, 5], [24, 25], [29, 30]]` shaped `{3,2}`
 
 ```elixir
 l =
@@ -1262,23 +1307,62 @@ l[[2..3//1, 0..1//1]]
 ```
 
 ```elixir
-# 2,8,14,20
+Nx.take_diagonal(l, offset: 1)
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-nil
+#Nx.Tensor<
+  s64[4]
+  [2, 8, 14, 20]
+>
 ```
 
 ```elixir
-# [4,5],
-# [24,25],
-# [29,39]
+red_1 = l[[0..0, 3..4]]
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-nil
+#Nx.Tensor<
+  s64[x: 1][y: 2]
+  [
+    [4, 5]
+  ]
+>
+```
+
+```elixir
+red_2 = l[[4..5//1, 3..4//1]]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[x: 2][y: 2]
+  [
+    [24, 25],
+    [29, 30]
+  ]
+>
+```
+
+```elixir
+Nx.concatenate([red_1, red_2])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[x: 3][y: 2]
+  [
+    [4, 5],
+    [24, 25],
+    [29, 30]
+  ]
+>
 ```
