@@ -17,6 +17,7 @@ import IEx.Helpers
 * [NX Docs](https://hexdocs.pm/nx/)
 * [Numerical Elixir (Nx) Github](https://github.com/elixir-nx)
 * [NX - Exercises: 1-20](https://github.com/elixir-nx/nx/blob/main/nx/exercises/exercises-1-20.livemd)
+* [Discover Livebook notebooks (Elixir)](https://notes.club/)
 
 ## The Basics
 
@@ -88,7 +89,7 @@ Nx.Defn.Kernel.print_value(d)
   
   Nx.Defn.Expr
   tensor a                f32[2][3]
-  b = token hook_67: a    tuple1
+  b = token hook_70: a    tuple1
   c = attach_token b, a   f32[2][3]
 >
 ```
@@ -1236,13 +1237,20 @@ filedata =
 #### Filter
 
 ```elixir
-# filedata[filedata > 50]
+Nx.greater(filedata, 50)
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-nil
+#Nx.Tensor<
+  u8[3][18]
+  [
+    [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, ...]
+  ]
+>
 ```
 
 #### Boolean Masking and Advanced Indexing
