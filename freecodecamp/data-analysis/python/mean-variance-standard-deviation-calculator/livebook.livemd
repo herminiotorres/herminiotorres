@@ -1,0 +1,286 @@
+# FreeCodeCamp - Data Analysis with Elixir Projects
+
+```elixir
+Mix.install([
+  {:nx, "~> 0.6.4"}
+])
+```
+
+## Mean-Variance-Standard Deviation Calculator
+
+#### Instruction
+
+Create a function named `calculate()` in the `MeanVarStd` module that uses `Elixir Nx` to output the `mean`, `variance`, `standard deviation`, `max`, `min`, and `sum` of the rows, columns, and elements in a `3 x 3` matrix.
+
+The input of the function should be a list containing 9 digits. The function should convert the list into a `3 x 3` numerical array, and then return a `map` containing the mean, variance, standard deviation, max, min, and sum along both axes and for the flattened matrix.
+
+The returned dictionary should follow this format:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{
+  mean: [axis1, axis2, flattened],
+  variance: [axis1, axis2, flattened],
+  standard_deviation: [axis1, axis2, flattened],
+  max: [axis1, axis2, flattened],
+  min: [axis1, axis2, flattened],
+  sum: [axis1, axis2, flattened],
+}Ï
+```
+
+If a list containing less than 9 elements is passed into the function, it should raise a `ValueError` exception with the message: `"List must contain nine numbers."` The values in the returned `map` should be lists and not numerical arrays.
+
+For example, `calculate([0,1,2,3,4,5,6,7,8])` should return:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+%{
+  mean: [[3.0, 4.0, 5.0], [1.0, 4.0, 7.0], 4.0],
+  variance: [
+    [6.0, 6.0, 6.0],
+    [0.6666666666666666, 0.6666666666666666, 0.6666666666666666],
+    6.666666666666667
+  ],
+  standard_deviation: [
+    [2.449489742783178, 2.449489742783178, 2.449489742783178],
+    [0.816496580927726, 0.816496580927726, 0.816496580927726],
+    2.581988897471611
+  ],
+  max: [[6, 7, 8], [2, 5, 8], 8],
+  min: [[0, 1, 2], [0, 3, 6], 0],
+  sum: [[9, 12, 15], [3, 12, 21], 36]
+}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Solution
+
+```elixir
+defmodule ValueError do
+  defexception message: "bad argument in arithmetic expression"
+end
+```
+
+```elixir
+defmodule MeanVarStd do
+  def calculate(list) do
+    if length(list) == 9 do
+      tensor =
+        list
+        |> Nx.tensor()
+        |> Nx.reshape({3, 3})
+
+      %{
+        mean: mean(tensor),
+        variance: variance(tensor),
+        standard_deviation: standard_deviation(tensor),
+        max: max(tensor),
+        min: min(tensor),
+        sum: sum(tensor)
+      }
+    else
+      raise ValueError
+    end
+  end
+
+  defp mean(tensor) do
+    [
+      tensor
+      |> Nx.mean(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.mean(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.mean()
+      |> Nx.to_number()
+    ]
+  end
+
+  defp variance(tensor) do
+    [
+      tensor
+      |> Nx.variance(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.variance(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.variance()
+      |> Nx.to_number()
+    ]
+  end
+
+  defp standard_deviation(tensor) do
+    [
+      tensor
+      |> Nx.standard_deviation(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.standard_deviation(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.standard_deviation()
+      |> Nx.to_number()
+    ]
+  end
+
+  defp max(tensor) do
+    [
+      tensor
+      |> Nx.reduce_max(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.reduce_max(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.reduce_max()
+      |> Nx.to_number()
+    ]
+  end
+
+  defp min(tensor) do
+    [
+      tensor
+      |> Nx.reduce_min(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.reduce_min(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.reduce_min()
+      |> Nx.to_number()
+    ]
+  end
+
+  defp sum(tensor) do
+    [
+      tensor
+      |> Nx.sum(axes: [0])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.sum(axes: [1])
+      |> Nx.to_list(),
+      tensor
+      |> Nx.sum()
+      |> Nx.to_number()
+    ]
+  end
+end
+```
+
+```elixir
+MeanVarStd.calculate([2, 6, 2, 8, 4, 0, 1, 5, 7])
+```
+
+### Test
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule ExampleTest do
+  use ExUnit.Case, async: false
+
+  # @tag :skip
+  test "Expected different output when calling 'calculate()' with '[2,6,2,8,4,0,1,5,7]'" do
+    actual = MeanVarStd.calculate([2, 6, 2, 8, 4, 0, 1, 5, 7])
+
+    expected = %{
+      max: [[8, 6, 7], [6, 8, 7], 8],
+      mean: [
+        [3.6666667461395264, 5.0, 3.0],
+        [3.3333332538604736, 4.0, 4.333333492279053],
+        3.8888888359069824
+      ],
+      min: [[1, 4, 0], [2, 0, 1], 0],
+      standard_deviation: [
+        [
+          3.0912060737609863,
+          0.8164966106414795,
+          2.943920373916626
+        ],
+        [
+          1.8856180906295776,
+          3.265986442565918,
+          2.494438409805298
+        ],
+        2.6434171199798584
+      ],
+      sum: [[11, 15, 9], [10, 12, 13], 35],
+      variance: [
+        [
+          9.555554389953613,
+          0.6666666865348816,
+          8.666666984558105
+        ],
+        [
+          3.555555582046509,
+          10.666666984558105,
+          6.222222805023193
+        ],
+        6.987654209136963
+      ]
+    }
+
+    assert actual == expected
+  end
+
+  # @tag :skip
+  test "Expected different output when calling 'calculate()' with '[9,1,5,3,3,3,2,9,0]'" do
+    actual = MeanVarStd.calculate([9, 1, 5, 3, 3, 3, 2, 9, 0])
+
+    expected = %{
+      max: [[9, 9, 5], [9, 3, 9], 9],
+      mean: [
+        [
+          4.666666507720947,
+          4.333333492279053,
+          2.6666667461395264
+        ],
+        [5.0, 3.0, 3.6666667461395264],
+        3.8888888359069824
+      ],
+      min: [[2, 1, 0], [1, 3, 0], 0],
+      standard_deviation: [
+        [
+          3.0912060737609863,
+          3.399346351623535,
+          2.054804801940918
+        ],
+        [3.265986442565918, 0.0, 3.858612298965454],
+        3.034777879714966
+      ],
+      sum: [[14, 13, 8], [15, 9, 11], 35],
+      variance: [
+        [
+          9.55555534362793,
+          11.555556297302246,
+          4.222222328186035
+        ],
+        [10.666666984558105, 0.0, 14.888888359069824],
+        9.20987606048584
+      ]
+    }
+
+    assert actual == expected
+  end
+
+  # @tag :skip
+  test "List must contain nine numbers." do
+    assert_raise ValueError, "bad argument in arithmetic expression", fn ->
+      MeanVarStd.calculate([2, 6, 2, 8, 4, 0, 1])
+    end
+  end
+end
+```
+
+### Execute Test
+
+__*PS*__: Remember to remove the `@tag :skip`.
+
+```elixir
+ExUnit.run()
+```
