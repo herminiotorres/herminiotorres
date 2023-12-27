@@ -34,10 +34,11 @@ $ conda init "SHELL"
 
 ```sh
 $ conda env list
+$ conda info --envs
 ```
 
 ```sh
-$ conda create --prefix ./env python=3.11
+$ conda create --prefix ./env python=3.
 ```
 
 Porque a versão 3.11? `$ whereis python3.11`
@@ -88,13 +89,19 @@ llmx
 instala:
 
 ```sh
-$ pip3.11 install -r requirements.txt
+$ pip install -r requirements.txt
+```
+
+exportar o environment:
+
+```sh
+$ conda env export --file environment.yml
 ```
 
 ver a versão de uma dependencia:
 
 ```sh
-$ pip3.11 show langchain
+$ pip show langchain
 Name: langchain
 Version: 0.0.340
 Summary: Building applications with LLMs through composability
@@ -108,5 +115,5 @@ Required-by:
 ```
 
 ```sh
-$ pip3.11 install -U langchain_experimental
+$ pip install -U langchain_experimental
 ```
