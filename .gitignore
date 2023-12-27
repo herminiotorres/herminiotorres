@@ -10,6 +10,7 @@ Thumbs.db
 # python
 .ipynb_checkpoints
 __pycache__/
+*.pyc
 env/
 
 # elixir
